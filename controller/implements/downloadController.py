@@ -13,19 +13,27 @@ def downloadPic():
     type=request.query.type;
     requestTime=request.query.time;
 
+    #para error,include null and validation
     if not type or not requestTime:
-        body="code:401\nreason:type or time is null"
-        return HTTPResponse(status=400,body=body)
+        body="type or time is null"
+        return HTTPResponse(status=401,body=body)
 
+    if int(type)>cc.PIC_TYPENUM:
+        body="type error"
+        return HTTPResponse(status=402,body=body)
+
+    #package error,include time limit and cookie
     nowTime=time.time()
     if float(requestTime)+cc.VALID_PACK <float(nowTime):
-        body="code:402\nreason:over time,it is not valid"
-        return HTTPResponse(status=400, body=body)
+        body="over time package"
+        return HTTPResponse(status=403, body=body)
 
+    #server error
     res=pr.downloadPic(type,nowTime)
     if not res:
-        body="code:501\nreason:server error"
-        return HTTPResponse(status=500, body=body)
+        body="server error"
+        return HTTPResponse(status=501, body=body)
+
 
     response.set_header("content_type","image/jpeg")
     return  res
