@@ -63,6 +63,7 @@ class picManager:
             nowTime = int(time.time())
             if int(value) + pc.DELETE_INTERVAL < nowTime:
                 os.remove(pc.PIC_LOCAL["1"] + value + ".jpeg")
+                print "remove",value
                 self.blkPic_dict.pop(key)
         for key in self.pptPic_dict.keys():
             nowTime = int(time.time())
@@ -71,11 +72,9 @@ class picManager:
                 os.remove(pc.PIC_LOCAL["1"] + value + ".jpeg")
                 self.pptPic_dict.pop(key)
 
-
 '''
 regist pic type to picManager
 '''
-
 
 def registerPic_type(type):
     picManager.recentPic[type] = 0
@@ -93,10 +92,12 @@ in order to delete useless pic from pic folder
 
 def TD():
     global picManager
-    schedule.every(pc.DELETE_INTERVAL).seconds.do(picManager.DeleteUseless_pic)
+    #schedule.every(pc.DELETE_INTERVAL).seconds.do(picManager.DeleteUseless_pic)
     while True:
-        schedule.run_pending()
-
+        #schedule.run_pending()
+        picManager.DeleteUseless_pic()
+        time.sleep(pc.DELETE_INTERVAL)
+        print "---run delete---"
 
 '''
 downloadPic api for appRouter
