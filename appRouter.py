@@ -5,7 +5,7 @@ import bottle
 import os
 import threading
 import time
-from util import picReader as pr
+from util import picManager as pr
 from config import controllerConfig
 from config import serverConfig as sc
 
@@ -29,7 +29,6 @@ def registerController(dir=controllerConfig.IMPLEMENTS_DIR):
 
 registerController()
 threading._start_new_thread(pr.TD,())
-print time.time()
 bottle.run(port=sc.PORT,host=sc.HOST)
 
 

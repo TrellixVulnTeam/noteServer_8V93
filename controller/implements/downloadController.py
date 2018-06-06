@@ -3,8 +3,8 @@
 
 import time
 
-from bottle import HTTPResponse,request,app,route,response
-from util import picReader as pr
+from bottle import HTTPResponse,request,route,response
+from util import picManager as pm
 from config import cameraConfig as cc
 
 @route("/download",method="get")
@@ -24,12 +24,12 @@ def downloadPic():
 
     #package error,include time limit and cookie
     nowTime=time.time()
-    if float(requestTime)+cc.VALID_PACK <float(nowTime):
+    if float(requestTime)+cc.VALID_PACK <nowTime:
         body="over time package"
         return HTTPResponse(status=403, body=body)
 
     #server error
-    res=pr.downloadPic(type,nowTime)
+    res=pm.downloadPic(type,requestTime)
     if not res:
         body="server error"
         return HTTPResponse(status=501, body=body)
