@@ -5,7 +5,7 @@ import bottle
 import os
 import threading
 import time
-from util import picManager as pr
+from util import picManager as pm
 from config import controllerConfig
 from config import serverConfig as sc
 
@@ -27,8 +27,16 @@ def registerController(dir=controllerConfig.IMPLEMENTS_DIR):
                     exec(importStr,globals())
 
 
-registerController()
-threading._start_new_thread(pr.TD,())
-bottle.run(port=sc.PORT,host=sc.HOST)
+if __name__=="__main__":
+
+    registerController()    # register all controller in controller/implements
+
+    # start to clear useless photos and open the camara
+    threading._start_new_thread(pm.TD, ())
+    pm.OpenCam()
+
+    app = application = bottle.Bottle()
+    print int(time.time())
+    bottle.run(port=sc.PORT,host=sc.HOST)
 
 

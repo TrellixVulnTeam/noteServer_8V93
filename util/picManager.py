@@ -9,6 +9,14 @@ import schedule
 from config import cameraConfig as cc
 from config import picConfig as pc
 
+cap=None  # craete videoCapture object
+def OpenCam():
+    global cap
+    cap = cv.VideoCapture(cc.CAMERA_NUM)
+    cap.read()
+def ReleaseCam():
+    global cap
+    cap.release()
 
 class picManager:
     recentPic = {}
@@ -46,7 +54,7 @@ class picManager:
                 self.blkBoard_mutex.release()
         else:  # therer is no useful pic,then capture a new pic
             nowTime = str(int(time.time()))
-            cap = cv.VideoCapture(cc.CAMERA_NUM)  # craete videoCapture object
+            global cap
             res, frame = cap.read()  # capture a new pic
             if res:  # change recentPic's time
                 '''write file with file mutex
@@ -56,7 +64,6 @@ class picManager:
                     self.recentPic["blkBoard"] = nowTime
                     self.blkPic_dict[nowTime] = nowTime  # add a new pic name to blkPic_list
                     self.blkBoard_mutex.release()
-            cap.release()
             with open(pc.PIC_LOCAL["1"] + nowTime + ".jpeg", "rb") as f:
                 image = f.read()
         return image
