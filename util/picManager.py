@@ -36,7 +36,7 @@ class picManager:
 
     def getBlkboard_pic(self, reqTime):
         image = b""
-        if reqTime + self.interval > int(self.recentPic["blkBoard"]):
+        if reqTime < self.interval + int(self.recentPic["blkBoard"]):
             '''read file with file mutex
             '''
             if self.blkBoard_mutex.acquire(cc.INTERVAL):
@@ -64,7 +64,7 @@ class picManager:
     def getPPT_pic(self, reqTime):
         image=b""
         if self.pptPic_mutex.acquire(cc.INTERVAL):
-            if int(self.recentPic["ppt"]) >0 and int(self.recentPic["ppt"])+pc.DELETE_INTERVAL> reqTime:
+            if int(self.recentPic["ppt"])+pc.DELETE_INTERVAL> reqTime:
                 with open(pc.PIC_LOCAL["2"]+self.recentPic["ppt"]+"jpeg","rb") as f:
                     image=f.read()
             self.pptPic_mutex.release()
@@ -94,7 +94,7 @@ regist pic type to picManager
 '''
 
 def registerPic_type(type):
-    picManager.recentPic[type] = 0
+    picManager.recentPic[type] = "0"
 
 
 registerPic_type("blkBoard")  # black board pic type
