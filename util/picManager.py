@@ -5,7 +5,6 @@ import cv2 as cv
 import threading
 import time
 import os
-import schedule
 from config import cameraConfig as cc
 from config import picConfig as pc
 
