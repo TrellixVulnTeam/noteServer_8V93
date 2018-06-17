@@ -29,12 +29,16 @@ def downloadPic():
         return HTTPResponse(status=403, body=body)
 
     #server error
-    res=pm.downloadPic(type,int(requestTime))
-    if not res:
-        body="server error"
-        return HTTPResponse(status=501, body=body)
-
+    try:
+        res=pm.downloadPic(type,int(requestTime))
+    except Exception as err:
+        print "---------download,picManager error-----------"
+        print err
+        print "---------------------------------------------"
+    finally:
+        if not res:
+            body="server error"
+            return HTTPResponse(status=501, body=body)
 
     response.set_header("content_type","image/jpeg")
     return  res
-    #return response
