@@ -34,6 +34,7 @@ def downloadPic():
     except Exception as err:
         print "---------download,picManager error-----------"
         print err
+        res=None
         print "---------------------------------------------"
     finally:
         if not res:
