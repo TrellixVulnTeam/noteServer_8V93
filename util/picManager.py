@@ -54,6 +54,8 @@ class picManager:
         else:  # therer is no useful pic,then capture a new pic
             nowTime = str(int(time.time()))
             global cap
+            for i in range(4):
+                cap.grab()
             res, frame = cap.read()  # capture a new pic
             if res:  # change recentPic's time
                 '''write file with file mutex
