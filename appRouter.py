@@ -33,7 +33,7 @@ if __name__=="__main__":
 
     # start to clear useless photos and open the camara
     threading._start_new_thread(pm.TD, ())
-    pm.OpenCam()
+    pm.Init()
 
     app = application = bottle.Bottle()
     print int(time.time())
