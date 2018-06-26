@@ -85,6 +85,8 @@ class handlerObj():
         #remove noise
         #use medianBlur default
         originImg=img.copy()
+        nowTime=time.time()
+        cv.imwrite(pc.SAVE_LOCAL["1"] + nowTime + ".jpeg", originImg)
         if self.rmNoise_type==0:
             tempImg=self.function[self.rmNoise_type](originImg,(kernelSize,kernelSize),0)
         else:
@@ -106,7 +108,7 @@ class handlerObj():
         bottom,left,top,right=self.todoObj.detect(img)
         time_e=time.time()
         print "--------------detect&de:",str(time_e-time_s)
-
+        cv.imwrite(pc.SAVE_LOCAL["2"] + nowTime + ".jpeg", img)
         height=len(tempImg)
         width=len(tempImg[0])
         blkHeight=int((top-bottom)*height)
